@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source $HOME/.mysql/.env
+
+echo -e -n  "\e[1;36m La Base donnée : \e[0m"
+read DBNAME
+
+echo -e -n  "\e[1;36m Votre fichier TARGET : \e[0m"
+read SQL_FILE 
+
+set -e
+
+podman exec -it "$CONTAINER_NAME" mysqldump -u root -p"$ROOT_PASSWORD" "$DBNAME" 2>&1 | grep -v "Warning" > "$SQL_FILE" 
+
