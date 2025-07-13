@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+#tomefy-sql-copy container_name(tomefy-mysql) [/fichier_temp] [fichier à éxécuter]
+if [ -z "$1" ]; then 
+    echo "Nom du container requis"
+    exit 1
+fi
+
+CONTAINER_NAME=$1
+
+echo "container name: $CONTAINER_NAME"
+
+
+if [ -z "$2" ]; then
+    TO_PUT_PATH="/tmp/sql_test"
+else 
+    TO_PUT_PATH="$2"
+fi
+
+echo "to put path: $TO_PUT_PATH"
+
+CURRENT_DIR="$(pwd)/"
+
+echo "current dir $CURRENT_DIR"
+
+podman exec -it "$CONTAINER_NAME" rm -rf "$TO_PUT_PATH"
+
+podman cp "$CURRENT_DIR" "$CONTAINER_NAME:$TO_PUT_PATH" 
+
+if [ -z "$3" ]; then 
+    echo "Pas de fichier de commencement utilisée"
+else
+   # echo "$TO_PUT_PATH/$3"
+    podman exec -it -w "$TO_PUT_PATH" "$CONTAINER_NAME" mysql -u root -p -e "source $TO_PUT_PATH/$3"
+fi

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source $HOME/.mysql/.env
+
+podman run -d \
+    --name="$CONTAINER_NAME" \
+    -p $HOST_PORT:$CONTAINER_PORT \
+    -e MYSQL_ROOT_PASSWORD=$ROOT_PASSWORD \
+    -v $DATA_DIR:/var/lib/mysql:Z \
+    --replace \
+    mysql/mysql-server

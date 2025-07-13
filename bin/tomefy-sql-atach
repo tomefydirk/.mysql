@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source $HOME/.mysql/.env
+
+podman attach $CONTAINER_NAME

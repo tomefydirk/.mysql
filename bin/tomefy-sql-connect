@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source $HOME/.mysql/.env
+
+podman exec -it $CONTAINER_NAME mysql -u root -p $1
